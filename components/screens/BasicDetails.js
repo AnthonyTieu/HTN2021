@@ -16,8 +16,6 @@ import SituationDetails from './SituationDetails';
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
-const Stack = createStackNavigator();
-
 // Progress indicator styles
 const customStyles = {
     stepIndicatorSize: 25,
@@ -93,7 +91,7 @@ const getLocation = async (setFieldValue) => {
 };
 
 // Basic Details() produces the Basic Details Screen
-function BasicDetails({ navigation }) {
+export default function BasicDetails({ navigation }) {
     return (
         <ScrollView style={{ backgroundColor: '#5968F0', }} contentContainerStyle={{ flexGrow: 1 }}>
             <View style={{
@@ -209,27 +207,6 @@ function BasicDetails({ navigation }) {
         </ScrollView>
     );
 }
-
-function DetailsNav() {
-    return (
-        <Stack.Navigator screenOptions={{ presentation: "modal" }}>
-            <Stack.Screen name="Basic Details" component={BasicDetails}
-                options={{ headerShown: false }}
-            />
-            <Stack.Screen name="Situation Details" component={SituationDetails}
-                options={{ headerShown: false }}
-            />
-            <Stack.Screen name="NGOsNearby" component={NGOsNearby}
-                options={{ headerShown: false }}
-            />
-            <Stack.Screen name="InformationShared" component={InformationShared}
-                options={{ headerShown: false }}
-            />
-        </Stack.Navigator>
-    );
-}
-
-export default DetailsNav;
 
 // Basic Details Stylesheet
 const styles = StyleSheet.create({

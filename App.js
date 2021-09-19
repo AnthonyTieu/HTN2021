@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import DetailsNav from './components/screens/BasicDetails';
+import DetailsNav from './components/screens/LogIn';
 import NGOsNearby from './components/screens/NGOsNearby';
 import CustomStatusBar from './components/other/CustomStatusBar';
 import LogIn from './components/screens/LogIn'

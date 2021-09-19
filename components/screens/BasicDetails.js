@@ -103,7 +103,7 @@ function BasicDetails({ navigation }) {
                 marginTop: windowHeight * 0.09,
                 paddingTop: windowHeight * 0.045
             }}>
-                <View style={{ marginBottom: 45, flex: 1, alignItems: 'center' }}>
+                <View style={{ marginBottom: 45, alignItems: 'center' }}>
                     <View style={{ width: 200 }}>
                         <StepIndicator
                             customStyles={customStyles}
@@ -135,7 +135,7 @@ function BasicDetails({ navigation }) {
                     {(props) => (<View>
                         <FormInput
                             title="Child Name"
-                            width={175}
+                            width={windowWidth * 0.5 - 36}
                             height={45}
                             hasIcon={false}
                             hasBottomMessage={false}
@@ -144,7 +144,7 @@ function BasicDetails({ navigation }) {
                         />
                         <FormInput
                             title="Contact Number"
-                            width={175}
+                            width={windowWidth * 0.5 - 36}
                             height={45}
                             hasIcon={false}
                             hasBottomMessage={false}
@@ -157,7 +157,7 @@ function BasicDetails({ navigation }) {
                         />
                         <FormInput
                             title="Child Age"
-                            width={175}
+                            width={windowWidth * 0.5 - 36}
                             height={45}
                             hasIcon={false}
                             hasBottomMessage={false}
@@ -208,7 +208,7 @@ function BasicDetails({ navigation }) {
     );
 }
 
-function DetailsNav({ navigation }) {
+function DetailsNav() {
     return (
         <Stack.Navigator screenOptions={{ presentation: "modal" }}>
             <Stack.Screen name="Basic Details" component={BasicDetails}

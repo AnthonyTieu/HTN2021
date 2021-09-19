@@ -48,6 +48,7 @@ const basicDetailsValidationSchema = yup.object().shape({
         .max(1000, 'max 1000 char'),
     describeProblem: yup
         .string()
+        .required('Description Required')
         .max(2000, 'max 2000 char'),
         
 });

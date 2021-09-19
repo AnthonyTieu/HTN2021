@@ -80,7 +80,9 @@ const styles = StyleSheet.create({
         flex: 1,
         color: "#7F7F7F",
         fontSize: 11,
+        textAlignVertical: 'top',
         paddingHorizontal: 16
+
     },
     rightIconContainer: {
         flexDirection: 'row',

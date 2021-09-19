@@ -3,12 +3,13 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import BasicDetails from './components/screens/BasicDetails';
 import CustomStatusBar from './components/other/CustomStatusBar';
+import SituationDetails from './components/screens/SituationDetails';
 
 export default function App() {
   return (
     <>
       <CustomStatusBar />
-      <BasicDetails />
+      <SituationDetails />
     </>
   );
 }

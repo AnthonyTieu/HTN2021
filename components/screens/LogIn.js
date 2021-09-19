@@ -13,6 +13,7 @@ import InformationShared from './InformationShared';
 import SituationDetails from './SituationDetails';
 import { createStackNavigator } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { NavigationContainer } from '@react-navigation/native';
 
 
 const Stack = createStackNavigator();
@@ -42,7 +43,7 @@ async function signInWithGoogleAsync() {
 
 var windowHeight = Dimensions.get('window').height;
 var windowWidth = Dimensions.get('window').width;
-function LogIn() {
+function LogIn({ navigation }) {
   console.log("loginScreenstart")
   useEffect(() => {
     // listen for auth state changes
@@ -68,8 +69,8 @@ function LogIn() {
       <Text style={styles.optionText}>Please log in with Google</Text>
 
       <View style={styles.buttonContainer}>
-        <TouchableHighlight onPress={signInWithGoogleAsync} style={styles.thirdPartyButton} underlayColor='black'>
-        <Icon name="logo-google" size={30}/>
+        <TouchableHighlight onPress={() => { signInWithGoogleAsync(); navigation.navigate("Basic Details") }} style={styles.thirdPartyButton} underlayColor='black'>
+          <Icon name="logo-google" size={30} />
         </TouchableHighlight>
       </View>
     </View>
@@ -123,7 +124,7 @@ const styles = StyleSheet.create({
 
   thirdPartyButton: {
     height: 45,
-    
+
     justifyContent: 'center',
     alignItems: 'center',
     borderColor: '#5968F0',

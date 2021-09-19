@@ -1,20 +1,22 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useEffect } from 'react';
-import { StyleSheet, Text, TouchableHighlight, View, Image, Dimensions} from 'react-native';
+import { StyleSheet, Text, TouchableHighlight, View, Image, Dimensions } from 'react-native';
 import { Button } from 'react-native-paper';
 import FacebookIcon from '../../assets/images/facebook.png'
 import FormInput from '../formComponents/FormInput';
 import firebase from 'firebase';
 import firebaseConfig from '../../config'
 import * as Google from 'expo-google-app-auth';
-import 'firebase/auth';
+import BasicDetails from './BasicDetails';
+import NGOsNearby from './NGOsNearby';
+import InformationShared from './InformationShared';
+import SituationDetails from './SituationDetails';
+import { createStackNavigator } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 
+const Stack = createStackNavigator();
 
-function storeUserRoot(token){
-  firebase.database().ref('root').set(token)
-}
 async function signInWithGoogleAsync() {
   try {
     console.log("authen start");
@@ -26,12 +28,12 @@ async function signInWithGoogleAsync() {
 
     if (result.type === 'success') {
       console.log(result.type);
-      
       return result.type;
     } else {
       console.log(failed);
-      return { 
-        cancelled: true };
+      return {
+        cancelled: true
+      };
     }
   } catch (e) {
     return { error: true };
@@ -40,73 +42,95 @@ async function signInWithGoogleAsync() {
 
 var windowHeight = Dimensions.get('window').height;
 var windowWidth = Dimensions.get('window').width;
-
-function test(){
-
-}
-export default function App() {
+function LogIn() {
   console.log("loginScreenstart")
   useEffect(() => {
     // listen for auth state changes
     const unsubscribe = firebase.auth().onAuthStateChanged(user => {
       console.log("onauthstatecalled")
-        if (user!==null) {
-          const uid = user.uid;
-          console.log(uid);
-          callback({loggedIn: true});
+      if (user !== null) {
+        const uid = user.uid;
+        console.log(uid);
+        storeUserRoot(uid);
 
-          storeUserRoot(uid);
-        } else {
-          // User is signed out
-          console.log("authfailed");
-          callback({loggedIn: false});
-        }
+      } else {
+        // User is signed out
+      }
     })
 
     // unsubscribe to the listener when unmounting
     return () => unsubscribe()
   }, [])
-  
+
   return (
     <View style={styles.container}>
       <Text style={styles.signUpText}>Log in</Text>
-      <Text style={styles.optionText}>Log in with Google</Text>
+      <Text style={styles.optionText}>Please log in with Google</Text>
 
-        <TouchableHighlight onPress = {signInWithGoogleAsync }style={styles.thirdPartyButton} underlayColor='#5968F0'>
-        <Icon name="logo-google" size={30} color="black"/>
-      </TouchableHighlight>
+      <View style={styles.buttonContainer}>
+        <TouchableHighlight onPress={signInWithGoogleAsync} style={styles.thirdPartyButton} underlayColor='black'>
+        <Icon name="logo-google" size={30}/>
+        </TouchableHighlight>
+      </View>
     </View>
   );
 }
+
+function DetailsNav() {
+  return (
+    <Stack.Navigator screenOptions={{ presentation: "modal" }}>
+      <Stack.Screen name="Log In" component={LogIn}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen name="Basic Details" component={BasicDetails}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen name="Situation Details" component={SituationDetails}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen name="NGOsNearby" component={NGOsNearby}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen name="InformationShared" component={InformationShared}
+        options={{ headerShown: false }}
+      />
+    </Stack.Navigator>
+  );
+}
+
+export default DetailsNav;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#FFFFFF',
-    justifyContent:'flex-start',
-    margin:windowWidth*0.09,
+    justifyContent: 'flex-start',
+    padding: windowWidth * 0.09,
+
+
   },
 
 
-  signUpText:{
-    fontSize:30,
-    marginTop:250
+  signUpText: {
+    fontSize: 30,
+    marginTop: 250
   },
 
-  optionText:{
-    fontSize:13,
-    marginTop:59
+  optionText: {
+    fontSize: 13,
+    marginTop: 59
   },
 
-
-  thirdPartyButton:{
-    height:45,
-    justifyContent:'center',
-    alignItems:'center',
+  thirdPartyButton: {
+    height: 45,
+    
+    justifyContent: 'center',
+    alignItems: 'center',
     borderColor: '#5968F0',
-    borderWidth:1,
-    marginBottom:140,
-    marginTop:12,
+    borderWidth: 1,
+    marginTop: 12,
+
   },
+
 
 });

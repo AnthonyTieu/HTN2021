@@ -22,6 +22,7 @@ export default function FormInput({
     height,
     hasIcon,
     iconType,
+    iconFunction,
     hasBottomMessage,
     bottomMessage,
     hasError,
@@ -39,6 +40,7 @@ export default function FormInput({
                                 name={iconType}
                                 size={25}
                                 color="#BFBFBF"
+                                onPress={iconFunction}
                             />
                         </View>
                     </View>

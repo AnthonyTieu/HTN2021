@@ -6,6 +6,7 @@ import FormInput from '../formComponents/FormInput';
 import StepIndicator from 'react-native-step-indicator';
 import * as yup from 'yup';
 import { Formik } from 'formik';
+import * as Location from 'expo-location';
 
 // Window size
 const windowWidth = Dimensions.get('window').width;
@@ -45,13 +46,45 @@ const basicDetailsValidationSchema = yup.object().shape({
     childAge: yup
         .string()
         .matches(/^[0-9]*$/, 'Invalid Age.')
-        .length(2, 'Invalid Age.'),
+        .max(2, 'Invalid Age.'),
     location: yup
         .string()
         .required('Location Required.'),
     parentName: yup
         .string(),
 });
+
+// getPermissions() requests location permissions
+const getPermissions = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== 'granted') {
+        Alert.alert(
+            'Location permissions required!',
+            'Please grant location permissions to use this app.',
+            [{ text: 'Okay' }]
+        );
+        return false;
+    }
+    return true;
+};
+
+// getLocation(setFieldValue) gets the user longitude, latitude, and city name
+const getLocation = async (setFieldValue) => {
+    const hasPermission = await getPermissions();
+    if (!hasPermission) {
+        return;
+    }
+    await Location.getCurrentPositionAsync({ timeout: 5000 })
+        .then(async (location) => {
+            console.log(location.coords.latitude);
+            await fetch(`http://api.positionstack.com/v1/reverse?access_key=8a9cc6abf8509c6dcbc28fdb732251fe&query=${location.coords.latitude},${location.coords.longitude}`)
+                .then(response => response.json())
+                .then(json => {
+                    console.log(json.data[0].locality);
+                    setFieldValue('location', json.data[0].locality);
+                })
+        })
+};
 
 // Basic Details() produces the Basic Details Screen
 export default function BasicDetails() {
@@ -78,7 +111,7 @@ export default function BasicDetails() {
                 <Text style={styles.title}>Basic details</Text>
                 <Text style={styles.subtitle}>Fill in your details</Text>
                 <Formik
-                    validationSchema={basicDetailsValidationSchema}
+                    //validationSchema={basicDetailsValidationSchema}
                     initialValues={{
                         childName: '',
                         contactNumber: '',
@@ -92,6 +125,7 @@ export default function BasicDetails() {
                         console.log(values.childAge);
                         console.log(values.location);
                         console.log(values.parentName);
+                        getLocation();
                     }}
                 >
                     {(props) => (<View>
@@ -136,6 +170,7 @@ export default function BasicDetails() {
                             height={45}
                             hasIcon={true}
                             iconType="locate-outline"
+                            iconFunction={() => getLocation(props.setFieldValue)}
                             hasBottomMessage={false}
                             onChangeText={props.handleChange('location')}
                             value={props.values.location}

@@ -39,9 +39,8 @@ const contactRegex = /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{
 const basicDetailsValidationSchema = yup.object().shape({
     verifiedDoc: yup
         .string(),
-    contactNumber: yup
-        .string()
-        .required('Video required'),
+    uploadVideo: yup
+        .string(),
     problemTitle: yup
         .string()
         .required('Problem Title Required')
@@ -50,11 +49,12 @@ const basicDetailsValidationSchema = yup.object().shape({
         .string()
         .required('Description Required')
         .max(2000, 'max 2000 char'),
-        
+
 });
 
 // Basic Details() produces the Basic Details Screen
-export default function BasicDetails() {
+export default function SituationDetails({ route, navigation }) {
+    const { location } = route.params;
     return (
         <ScrollView style={{ backgroundColor: '#5968F0', }}>
             <View style={{
@@ -90,23 +90,24 @@ export default function BasicDetails() {
                         console.log(values.uploadVideo);
                         console.log(values.problemTitle);
                         console.log(values.describeProblem);
+                        console.log('Here');
+                        navigation.navigate('NGOsNearby', { screen: 'NGOSNearby', location: location });
                     }}
                 >
                     {(props) => (<View>
                         <FormInput
                             title="Upload your verified Documents"
-                            width={175}
+                            width={windowWidth * 0.5 - 36}
                             height={45}
                             hasIcon={true}
                             iconType="attach-outline"
                             hasBottomMessage={false}
                             onChangeText={props.handleChange('verifiedDoc')}
                             value={props.values.verifiedDoc}
-                            
                         />
                         <FormInput
                             title="Upload Video"
-                            width={175}
+                            width={windowWidth * 0.5 - 36}
                             height={45}
                             hasIcon={true}
                             iconType="attach-outline"
@@ -117,7 +118,7 @@ export default function BasicDetails() {
                         />
                         <FormInput
                             title="Enter Problem Title"
-                            width={175}
+                            width={windowWidth * 0.5 - 36}
                             height={45}
                             hasIcon={false}
                             hasBottomMessage={false}
@@ -127,22 +128,21 @@ export default function BasicDetails() {
                             hasError={props.touched.problemTitle && props.errors.problemTitle}
                             bottomMessage={props.errors.problemTitle}
                         />
-                    
                         <FormInput
                             title="Describe the Problem"
                             flex={1}
                             height={200}
                             hasIcon={false}
-                            hasBottomMessage= {"true"}
-                            placeholder = 'Introduce the problem, reasons for the problem, why it is important problem.'
+                            hasBottomMessage={"true"}
+                            placeholder='Introduce the problem, reasons for the problem, why it is important problem.'
                             onChangeText={props.handleChange('describeProblem')}
                             value={props.values.describeProblem}
-                            multiline = {true}
-                            numberOfLines = {13}
+                            multiline={true}
+                            numberOfLines={13}
                             bottomMessage={"2000 char"}
                         />
                         <Button
-                            style={{ marginVertical: 25, borderRadius: 1 ,marginBottom:50}}
+                            style={{ marginVertical: 25, borderRadius: 1, marginBottom: 50 }}
                             color='#5968F0'
                             mode="contained"
                             dark

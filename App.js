@@ -7,14 +7,14 @@ import NGOsNearby from './components/screens/NGOsNearby';
 import CustomStatusBar from './components/other/CustomStatusBar';
 import LogIn from './components/screens/LogIn'
 import SignUp from './components/screens/SignUp'
+import InformationShared from './components/screens/InformationShared';
 
 export default function App() {
   return (
-    // <NavigationContainer>
-    //   <CustomStatusBar />
-    //   <DetailsNav />
-    // </NavigationContainer>
-    <LogIn></LogIn>
+    <NavigationContainer>
+      <CustomStatusBar />
+      <DetailsNav />
+    </NavigationContainer>
   );
 }
 

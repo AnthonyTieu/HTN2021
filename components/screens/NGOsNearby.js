@@ -1,9 +1,10 @@
 // Import Modules
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Dimensions, ScrollView, FlatList } from 'react-native';
 import { Button } from 'react-native-paper';
 import LocationCards from '../formComponents/LocationCards';
 import StepIndicator from 'react-native-step-indicator';
+import { useFocusEffect } from '@react-navigation/native';
 
 // Window size
 const windowWidth = Dimensions.get('window').width;
@@ -79,6 +80,10 @@ export default function NGOsNearby({ route, navigation }) {
             })
     };
 
+    useEffect(() => {
+        getCharities(location);
+    }, []);
+
     return (
         <ScrollView style={{ backgroundColor: '#5968F0', }} contentContainerStyle={{ flexGrow: 1 }}>
             <View style={{
@@ -114,7 +119,7 @@ export default function NGOsNearby({ route, navigation }) {
                     mode="contained"
                     dark
                     uppercase={false}
-                    onPress={() => getCharities(location)}>
+                    onPress={() => navigation.navigate('InformationShared')}>
                     <Text style={{ fontSize: 20 }}>Submit</Text>
                 </Button>
             </View>

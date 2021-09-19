@@ -9,6 +9,8 @@ import { Formik } from 'formik';
 import * as Location from 'expo-location';
 import { createStackNavigator } from '@react-navigation/stack';
 import NGOsNearby from './NGOsNearby';
+import InformationShared from './InformationShared';
+import SituationDetails from './SituationDetails';
 
 // Window size
 const windowWidth = Dimensions.get('window').width;
@@ -129,7 +131,7 @@ function BasicDetails({ navigation }) {
                         console.log(values.childAge);
                         console.log(values.location);
                         console.log(values.parentName);
-                        navigation.navigate('NGOsNearby', { screen: 'NGOSNearby', location: values.location });
+                        navigation.navigate('Situation Details', { screen: 'Situation Details', location: values.location });
                     }}
                 >
                     {(props) => (<View>
@@ -214,10 +216,13 @@ function DetailsNav() {
             <Stack.Screen name="Basic Details" component={BasicDetails}
                 options={{ headerShown: false }}
             />
-            {/*<Stack.Screen name="Situation Details" component={SituationDetails}
+            <Stack.Screen name="Situation Details" component={SituationDetails}
                 options={{ headerShown: false }}
-    />*/}
+            />
             <Stack.Screen name="NGOsNearby" component={NGOsNearby}
+                options={{ headerShown: false }}
+            />
+            <Stack.Screen name="InformationShared" component={InformationShared}
                 options={{ headerShown: false }}
             />
         </Stack.Navigator>

@@ -1,18 +1,21 @@
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, Text, TouchableHighlight, View, Image, Dimensions} from 'react-native';
 import { Button } from 'react-native-paper';
 import FacebookIcon from '../../assets/images/facebook.png'
 import FormInput from '../formComponents/FormInput';
-import firebase from 'firebase/app'
-import {firebaseConfig} from '../../config';
-firebase.initializeApp(firebaseConfig);
+import firebase from 'firebase';
+import firebaseConfig from '../../config'
 import * as Google from 'expo-google-app-auth';
 
 
 
+function storeUserRoot(token){
+  firebase.database().ref('root').set(token)
+}
 async function signInWithGoogleAsync() {
   try {
+    console.log("authen start");
     const result = await Google.logInAsync({
       androidClientId: '201868013313-nkpp7cqb1c92t18jle74e70l92sians3.apps.googleusercontent.com',
       // iosClientId: YOUR_CLIENT_ID_HERE,
@@ -20,8 +23,8 @@ async function signInWithGoogleAsync() {
     });
 
     if (result.type === 'success') {
-      console.log(result.accessToken);
-      return result.accessToken;
+      console.log(result.type);
+      return result.type;
     } else {
       console.log(failed);
       return { 
@@ -39,6 +42,25 @@ function test(){
 
 }
 export default function App() {
+  console.log("loginScreenstart")
+  useEffect(() => {
+    // listen for auth state changes
+    const unsubscribe = firebase.auth().onAuthStateChanged(user => {
+      console.log("onauthstatecalled")
+        if (user!==null) {
+          const uid = user.uid;
+          console.log(uid);
+          storeUserRoot(uid);
+  
+        } else {
+          // User is signed out
+        }
+    })
+
+    // unsubscribe to the listener when unmounting
+    return () => unsubscribe()
+  }, [])
+  
   return (
     <View style={styles.container}>
       <Text style={styles.signUpText}>Log in</Text>

@@ -32,7 +32,7 @@ export default function FormInput({
         <View style={[styles.container, { width: width }]}>
             <Text style={styles.title}>{title}</Text>
             <View style={[styles.textInputContainer, { width: width, height: height }]}>
-                <TextInput style={[styles.textInput, { height: height, backgroundColor: 'red' }]} {...rest} />
+                <TextInput style={[styles.textInput, { height: height }]} {...rest} />
                 {hasIcon &&
                     <View style={styles.rightIconContainer}>
                         <View style={styles.rightIcon}>

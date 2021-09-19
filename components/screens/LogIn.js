@@ -72,28 +72,9 @@ export default function App() {
       <Text style={styles.signUpText}>Log in</Text>
       <Text style={styles.optionText}>Log in with Google</Text>
 
-      <View style={styles.buttonContainer}>
         <TouchableHighlight onPress = {signInWithGoogleAsync }style={styles.thirdPartyButton} underlayColor='#5968F0'>
         <Icon name="logo-google" size={30} color="black"/>
       </TouchableHighlight>
-      </View>
-
-
-    <Button
-        style={{ marginTop: 25, borderRadius: 1 }}
-        color='#5968F0'
-        mode="contained"
-        dark
-        uppercase={false}>
-        <Text style={{ fontSize: 20 }}>Next</Text>
-    </Button>
-
-      <View style ={styles.bottomTextContainer}>
-        <Text >Don't have an account? </Text>
-        <Text style ={{fontWeight:'bold'}}>Sign Up</Text>
-
-      </View>
-
     </View>
   );
 }
@@ -109,7 +90,7 @@ const styles = StyleSheet.create({
 
   signUpText:{
     fontSize:30,
-    marginTop:140
+    marginTop:250
   },
 
   optionText:{
@@ -117,37 +98,15 @@ const styles = StyleSheet.create({
     marginTop:59
   },
 
-  
-  image:{
-    resizeMode:'contain',
-  },
-
-  buttonContainer:{
-    flexDirection:'row',
-    justifyContent:'center',
-    marginTop:12,
-    marginBottom:140,
-    
-  },
 
   thirdPartyButton:{
     height:45,
     justifyContent:'center',
     alignItems:'center',
     borderColor: '#5968F0',
-    flex:1,
     borderWidth:1,
+    marginBottom:140,
+    marginTop:12,
   },
 
-  button:{
-    width:windowWidth*(1-2*0.09),
-    color: "#5968F0",
-    marginTop:100
-  },
-
-  bottomTextContainer:{
-    flexDirection:'row',
-    justifyContent:'flex-end',
-    marginTop:10
-    }
 });

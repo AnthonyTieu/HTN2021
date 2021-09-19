@@ -5,13 +5,16 @@ import { NavigationContainer } from '@react-navigation/native';
 import DetailsNav from './components/screens/BasicDetails';
 import NGOsNearby from './components/screens/NGOsNearby';
 import CustomStatusBar from './components/other/CustomStatusBar';
+import LogIn from './components/screens/LogIn'
+import SignUp from './components/screens/SignUp'
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <CustomStatusBar />
-      <DetailsNav />
-    </NavigationContainer>
+    // <NavigationContainer>
+    //   <CustomStatusBar />
+    //   <DetailsNav />
+    // </NavigationContainer>
+    <LogIn></LogIn>
   );
 }
 

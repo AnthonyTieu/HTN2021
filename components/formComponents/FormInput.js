@@ -24,28 +24,33 @@ export default function FormInput({
     iconType,
     hasBottomMessage,
     bottomMessage,
+    hasError,
     ...rest }) {
 
     return (
         <View style={[styles.container, { width: width }]}>
             <Text style={styles.title}>{title}</Text>
             <View style={[styles.textInputContainer, { width: width, height: height }]}>
-                <TextInput style={styles.textInput} />
+                <TextInput style={styles.textInput} {...rest} />
                 {hasIcon &&
                     <View style={styles.rightIconContainer}>
                         <View style={styles.rightIcon}>
                             <Icon
                                 name={iconType}
-                                size={18}
-                                color="#7F7F7F"
+                                size={25}
+                                color="#BFBFBF"
                             />
                         </View>
                     </View>
                 }
             </View>
-            {hasBottomMessage &&
+            {(hasBottomMessage || hasError) ?
+                <View style={[styles.bottomMessageContainer, { alignSelf: 'stretch' }]}>
+                    <Text style={hasError ? styles.bottomError : styles.bottomMessage}>{bottomMessage}</Text>
+                </View>
+                :
                 <View style={[styles.bottomMessageContainer, { width: width }]}>
-                    <Text style={styles.bottomMessage}>{bottomMessage}</Text>
+                    <Text style={styles.bottomMessage}></Text>
                 </View>
             }
         </View>
@@ -58,7 +63,7 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
-        marginBottom: 11
+        marginBottom: 6
     },
     title: {
         fontSize: 13,
@@ -67,7 +72,7 @@ const styles = StyleSheet.create({
     textInputContainer: {
         flexDirection: 'row',
         alignItems: 'center',
-        borderWidth: 1,
+        borderWidth: 0.6,
         borderRadius: 1,
         borderColor: '#5968F0'
     },
@@ -91,5 +96,9 @@ const styles = StyleSheet.create({
     },
     bottomMessage: {
         fontSize: 8
+    },
+    bottomError: {
+        fontSize: 8,
+        color: '#B00020'
     }
 });

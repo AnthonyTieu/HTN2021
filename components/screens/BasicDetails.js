@@ -7,10 +7,14 @@ import StepIndicator from 'react-native-step-indicator';
 import * as yup from 'yup';
 import { Formik } from 'formik';
 import * as Location from 'expo-location';
+import { createStackNavigator } from '@react-navigation/stack';
+import NGOsNearby from './NGOsNearby';
 
 // Window size
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
+
+const Stack = createStackNavigator();
 
 // Progress indicator styles
 const customStyles = {
@@ -87,7 +91,7 @@ const getLocation = async (setFieldValue) => {
 };
 
 // Basic Details() produces the Basic Details Screen
-export default function BasicDetails() {
+function BasicDetails({ navigation }) {
     return (
         <ScrollView style={{ backgroundColor: '#5968F0', }} contentContainerStyle={{ flexGrow: 1 }}>
             <View style={{
@@ -125,7 +129,7 @@ export default function BasicDetails() {
                         console.log(values.childAge);
                         console.log(values.location);
                         console.log(values.parentName);
-                        getLocation();
+                        navigation.navigate('NGOsNearby', { screen: 'NGOSNearby', location: values.location });
                     }}
                 >
                     {(props) => (<View>
@@ -203,6 +207,24 @@ export default function BasicDetails() {
         </ScrollView>
     );
 }
+
+function DetailsNav({ navigation }) {
+    return (
+        <Stack.Navigator screenOptions={{ presentation: "modal" }}>
+            <Stack.Screen name="Basic Details" component={BasicDetails}
+                options={{ headerShown: false }}
+            />
+            {/*<Stack.Screen name="Situation Details" component={SituationDetails}
+                options={{ headerShown: false }}
+    />*/}
+            <Stack.Screen name="NGOsNearby" component={NGOsNearby}
+                options={{ headerShown: false }}
+            />
+        </Stack.Navigator>
+    );
+}
+
+export default DetailsNav;
 
 // Basic Details Stylesheet
 const styles = StyleSheet.create({

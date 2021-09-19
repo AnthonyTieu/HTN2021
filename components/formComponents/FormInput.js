@@ -32,7 +32,7 @@ export default function FormInput({
         <View style={[styles.container, { width: width }]}>
             <Text style={styles.title}>{title}</Text>
             <View style={[styles.textInputContainer, { width: width, height: height }]}>
-                <TextInput style={styles.textInput} {...rest} />
+                <TextInput style={[styles.textInput, { height: height, backgroundColor: 'red' }]} {...rest} />
                 {hasIcon &&
                     <View style={styles.rightIconContainer}>
                         <View style={styles.rightIcon}>
@@ -82,7 +82,9 @@ const styles = StyleSheet.create({
         flex: 1,
         color: "#7F7F7F",
         fontSize: 11,
-        paddingHorizontal: 16
+        paddingHorizontal: 16,
+        textAlignVertical: 'top',
+        paddingVertical: 16
     },
     rightIconContainer: {
         flexDirection: 'row',

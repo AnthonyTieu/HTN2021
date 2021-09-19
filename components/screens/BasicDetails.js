@@ -111,7 +111,7 @@ export default function BasicDetails() {
                 <Text style={styles.title}>Basic details</Text>
                 <Text style={styles.subtitle}>Fill in your details</Text>
                 <Formik
-                    //validationSchema={basicDetailsValidationSchema}
+                    validationSchema={basicDetailsValidationSchema}
                     initialValues={{
                         childName: '',
                         contactNumber: '',

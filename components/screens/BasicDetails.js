@@ -89,7 +89,7 @@ const getLocation = async (setFieldValue) => {
 // Basic Details() produces the Basic Details Screen
 export default function BasicDetails() {
     return (
-        <ScrollView style={{ backgroundColor: '#5968F0', }}>
+        <ScrollView style={{ backgroundColor: '#5968F0', }} contentContainerStyle={{ flexGrow: 1 }}>
             <View style={{
                 flex: 1,
                 paddingHorizontal: 36,

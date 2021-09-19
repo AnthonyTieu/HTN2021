@@ -6,10 +6,15 @@ import FormInput from '../formComponents/FormInput';
 import StepIndicator from 'react-native-step-indicator';
 import * as yup from 'yup';
 import { Formik } from 'formik';
+import * as Location from 'expo-location';
+import { createStackNavigator } from '@react-navigation/stack';
+import NGOsNearby from './NGOsNearby';
 
 // Window size
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
+
+const Stack = createStackNavigator();
 
 // Progress indicator styles
 const customStyles = {
@@ -45,7 +50,7 @@ const basicDetailsValidationSchema = yup.object().shape({
     childAge: yup
         .string()
         .matches(/^[0-9]*$/, 'Invalid Age.')
-        .length(2, 'Invalid Age.'),
+        .max(2, 'Invalid Age.'),
     location: yup
         .string()
         .required('Location Required.'),
@@ -53,10 +58,42 @@ const basicDetailsValidationSchema = yup.object().shape({
         .string(),
 });
 
+// getPermissions() requests location permissions
+const getPermissions = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== 'granted') {
+        Alert.alert(
+            'Location permissions required!',
+            'Please grant location permissions to use this app.',
+            [{ text: 'Okay' }]
+        );
+        return false;
+    }
+    return true;
+};
+
+// getLocation(setFieldValue) gets the user longitude, latitude, and city name
+const getLocation = async (setFieldValue) => {
+    const hasPermission = await getPermissions();
+    if (!hasPermission) {
+        return;
+    }
+    await Location.getCurrentPositionAsync({ timeout: 5000 })
+        .then(async (location) => {
+            console.log(location.coords.latitude);
+            await fetch(`http://api.positionstack.com/v1/reverse?access_key=8a9cc6abf8509c6dcbc28fdb732251fe&query=${location.coords.latitude},${location.coords.longitude}`)
+                .then(response => response.json())
+                .then(json => {
+                    console.log(json.data[0].locality);
+                    setFieldValue('location', json.data[0].locality);
+                })
+        })
+};
+
 // Basic Details() produces the Basic Details Screen
-export default function BasicDetails() {
+function BasicDetails({ navigation }) {
     return (
-        <ScrollView style={{ backgroundColor: '#5968F0', }}>
+        <ScrollView style={{ backgroundColor: '#5968F0', }} contentContainerStyle={{ flexGrow: 1 }}>
             <View style={{
                 flex: 1,
                 paddingHorizontal: 36,
@@ -92,6 +129,7 @@ export default function BasicDetails() {
                         console.log(values.childAge);
                         console.log(values.location);
                         console.log(values.parentName);
+                        navigation.navigate('NGOsNearby', { screen: 'NGOSNearby', location: values.location });
                     }}
                 >
                     {(props) => (<View>
@@ -136,6 +174,7 @@ export default function BasicDetails() {
                             height={45}
                             hasIcon={true}
                             iconType="locate-outline"
+                            iconFunction={() => getLocation(props.setFieldValue)}
                             hasBottomMessage={false}
                             onChangeText={props.handleChange('location')}
                             value={props.values.location}
@@ -168,6 +207,24 @@ export default function BasicDetails() {
         </ScrollView>
     );
 }
+
+function DetailsNav({ navigation }) {
+    return (
+        <Stack.Navigator screenOptions={{ presentation: "modal" }}>
+            <Stack.Screen name="Basic Details" component={BasicDetails}
+                options={{ headerShown: false }}
+            />
+            {/*<Stack.Screen name="Situation Details" component={SituationDetails}
+                options={{ headerShown: false }}
+    />*/}
+            <Stack.Screen name="NGOsNearby" component={NGOsNearby}
+                options={{ headerShown: false }}
+            />
+        </Stack.Navigator>
+    );
+}
+
+export default DetailsNav;
 
 // Basic Details Stylesheet
 const styles = StyleSheet.create({
